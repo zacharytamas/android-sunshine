@@ -15,6 +15,7 @@
  */
 package com.zacharytamas.sunshine.app.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -24,6 +25,8 @@ import java.util.HashSet;
 public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
+    private WeatherDbHelper mHelper;
+    private SQLiteDatabase mDb;
 
     // Since we want each test to start with a clean slate
     void deleteTheDatabase() {
@@ -36,6 +39,8 @@ public class TestDb extends AndroidTestCase {
      */
     public void setUp() {
         deleteTheDatabase();
+        mHelper = new WeatherDbHelper(this.mContext);
+        mDb = mHelper.getWritableDatabase();
     }
 
     /*
@@ -55,13 +60,10 @@ public class TestDb extends AndroidTestCase {
         tableNameHashSet.add(WeatherContract.LocationEntry.TABLE_NAME);
         tableNameHashSet.add(WeatherContract.WeatherEntry.TABLE_NAME);
 
-        mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
-        SQLiteDatabase db = new WeatherDbHelper(
-                this.mContext).getWritableDatabase();
-        assertEquals(true, db.isOpen());
+        assertEquals(true, mDb.isOpen());
 
         // have we created the tables we want?
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        Cursor c = mDb.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
 
         assertTrue("Error: This means that the database has not been created correctly",
                 c.moveToFirst());
@@ -77,7 +79,7 @@ public class TestDb extends AndroidTestCase {
                 tableNameHashSet.isEmpty());
 
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + WeatherContract.LocationEntry.TABLE_NAME + ")",
+        c = mDb.rawQuery("PRAGMA table_info(" + WeatherContract.LocationEntry.TABLE_NAME + ")",
                 null);
 
         assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -101,7 +103,7 @@ public class TestDb extends AndroidTestCase {
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required location entry columns",
                 locationColumnHashSet.isEmpty());
-        db.close();
+        mDb.close();
     }
 
     /*
@@ -111,22 +113,36 @@ public class TestDb extends AndroidTestCase {
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
     public void testLocationTable() {
-        // First step: Get reference to writable database
+
+        final String tableName = WeatherContract.LocationEntry.TABLE_NAME;
 
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
+        ContentValues values = TestUtilities.createNorthPoleLocationValues();
 
         // Insert ContentValues into database and get a row ID back
+        Long id = mDb.insert(tableName, null, values);
+
+        // Assert that the insertion happened successfully.
+        assertTrue(id != -1);
 
         // Query the database and receive a Cursor back
+        Cursor cursor = mDb.query(tableName, null, "_id = " + id, null, null, null, null);
 
         // Move the cursor to a valid database row
+        assertTrue("Error: no rows were returned from database", cursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Error: record returned was not what we expected",
+                cursor, values);
+
+        assertFalse("Error: There should not have been another row in table", cursor.moveToNext());
 
         // Finally, close the cursor and database
+        cursor.close();
+        mDb.close();
 
     }
 
