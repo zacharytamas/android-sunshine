@@ -108,15 +108,6 @@ public class WeatherProvider extends ContentProvider {
         );
     }
 
-    private Cursor getWeather(String sortOrder) {
-        return mOpenHelper.getReadableDatabase().query(WeatherContract.WeatherEntry.TABLE_NAME,
-                null, null, null, null, null, sortOrder);
-    }
-
-    private Cursor getLocation(String sortOrder) {
-        return mOpenHelper.getReadableDatabase().query(WeatherContract.LocationEntry.TABLE_NAME,
-                null, null, null, null, null, sortOrder);
-    }
 
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
@@ -199,12 +190,18 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = getWeather(sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = getLocation(sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             }
 
