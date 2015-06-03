@@ -43,15 +43,21 @@ public class TestDb extends AndroidTestCase {
         mDb = mHelper.getWritableDatabase();
     }
 
-    /*
-        Students: Uncomment this test once you've written the code to create the Location
-        table.  Note that you will have to have chosen the same column names that I did in
-        my solution for this test to compile, so if you haven't yet done that, this is
-        a good time to change your column names to match mine.
+    @Override
+    protected void tearDown() throws Exception {
+        mDb.close();
+        super.tearDown();
+    }
 
-        Note that this only tests that the Location table has the correct columns, since we
-        give you the code for the weather table.  This test does not look at the
-     */
+    /*
+            Students: Uncomment this test once you've written the code to create the Location
+            table.  Note that you will have to have chosen the same column names that I did in
+            my solution for this test to compile, so if you haven't yet done that, this is
+            a good time to change your column names to match mine.
+
+            Note that this only tests that the Location table has the correct columns, since we
+            give you the code for the weather table.  This test does not look at the
+         */
     public void testCreateDb() throws Throwable {
         // build a HashSet of all of the table names we wish to look for
         // Note that there will be another table in the DB that stores the
@@ -103,7 +109,6 @@ public class TestDb extends AndroidTestCase {
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required location entry columns",
                 locationColumnHashSet.isEmpty());
-        mDb.close();
     }
 
     /*
@@ -142,7 +147,6 @@ public class TestDb extends AndroidTestCase {
 
         // Finally, close the cursor and database
         cursor.close();
-        mDb.close();
 
     }
 
@@ -155,28 +159,30 @@ public class TestDb extends AndroidTestCase {
     public void testWeatherTable() {
         // First insert the location, and then use the locationRowId to insert
         // the weather. Make sure to cover as many failure cases as you can.
-
-        // Instead of rewriting all of the code we've already written in testLocationTable
-        // we can move this code to insertLocation and then call insertLocation from both
-        // tests. Why move it? We need the code to return the ID of the inserted location
-        // and our testLocationTable can only return void because it's a test.
-
-        // First step: Get reference to writable database
+        long locationId = TestUtilities.insertNorthPoleLocationValues(getContext());
 
         // Create ContentValues of what you want to insert
         // (you can use the createWeatherValues TestUtilities function if you wish)
+        ContentValues weatherValues = TestUtilities.createWeatherValues(locationId);
 
         // Insert ContentValues into database and get a row ID back
+        long weatherId = mDb.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, weatherValues);
+        assertTrue(weatherId != -1);
 
         // Query the database and receive a Cursor back
+        Cursor c = mDb.query(WeatherContract.WeatherEntry.TABLE_NAME,
+                null, null, null, null, null, null);
 
         // Move the cursor to a valid database row
+        assertTrue("Error: There were no results from query", c.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Returned row was not as it should have been",
+                c, weatherValues);
 
-        // Finally, close the cursor and database
+        c.close();
     }
 
 
