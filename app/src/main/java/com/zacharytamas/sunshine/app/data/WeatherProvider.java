@@ -274,6 +274,8 @@ public class WeatherProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
+        database.close();
+
         return rowsAffected;
     }
 
