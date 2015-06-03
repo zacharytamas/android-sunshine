@@ -110,7 +110,10 @@ public class ForecastFragment extends Fragment {
     }
 
     public void fetchWeather() {
-        new FetchWeatherTask(getActivity(), mArrayAdapter);
+        String location = mSharedPreferences.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        new FetchWeatherTask(getActivity(), mArrayAdapter).execute(location);
     }
 
 }
