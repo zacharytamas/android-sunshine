@@ -122,14 +122,15 @@ public class WeatherProvider extends ContentProvider {
 
         // 2) Use the addURI function to match each of the types.  Use the constants from
         // WeatherContract to help define the types to the UriMatcher.
-        matcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_LOCATION, LOCATION);
+        final String contentAuthority = WeatherContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/*/",
+        matcher.addURI(contentAuthority, WeatherContract.PATH_LOCATION, LOCATION);
+        matcher.addURI(contentAuthority, WeatherContract.PATH_WEATHER + "/*/",
                 WEATHER_WITH_LOCATION);
-        matcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/*/#",
+        matcher.addURI(contentAuthority, WeatherContract.PATH_WEATHER + "/*/#",
                 WEATHER_WITH_LOCATION_AND_DATE);
 
-        matcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER, WEATHER);
+        matcher.addURI(contentAuthority, WeatherContract.PATH_WEATHER, WEATHER);
 
         return matcher;
     }
@@ -229,6 +230,15 @@ public class WeatherProvider extends ContentProvider {
                     returnUri = WeatherContract.WeatherEntry.buildWeatherUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case LOCATION: {
+                long _id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
+                    returnUri = WeatherContract.LocationEntry.buildLocationUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
                 break;
             }
             default:
