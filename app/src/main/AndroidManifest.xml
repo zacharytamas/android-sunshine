@@ -12,7 +12,8 @@
 
         <provider
             android:authorities="com.zacharytamas.sunshine.app"
-            android:name="com.zacharytamas.sunshine.app.data.WeatherProvider"/>
+            android:name="com.zacharytamas.sunshine.app.data.WeatherProvider"
+            android:exported="true"/>
 
         <activity
             android:name=".MainActivity"
