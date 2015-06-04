@@ -9,8 +9,11 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
+    private String mLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mLocation = Utility.getPreferredLocation(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -37,5 +40,18 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String location = Utility.getPreferredLocation(this);
+
+        if (location != mLocation) {
+            ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_forecast);
+            fragment.onLocationChanged();
+            mLocation = location;
+        }
     }
 }
