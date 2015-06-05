@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.zacharytamas.sunshine.app.data.WeatherContract;
+import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
 
 
 /**
@@ -40,8 +40,43 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     private void updateUI(Cursor cursor) {
-        TextView forecast = (TextView) getView().findViewById(R.id.fragment_detail_forecast);
-        forecast.setText(cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC)));
+//        TextView forecast = (TextView) getView().findViewById(R.id.fragment_detail_forecast);
+//        forecast.setText(cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC)));
+
+        boolean isMetric = Utility.isMetric(getActivity());
+
+        String date = Utility.getFriendlyDayString(getActivity(),
+                cursor.getLong(cursor.getColumnIndex(WeatherEntry.COLUMN_DATE)));
+        ((TextView) getView().findViewById(R.id.forecast_detail_date)).setText(date);
+
+        String high = Utility.formatTemperature(getActivity(),
+                cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MAX_TEMP)), isMetric);
+        ((TextView) getView().findViewById(R.id.forecast_detail_high)).setText(high);
+
+        String low = Utility.formatTemperature(getActivity(),
+                cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MIN_TEMP)), isMetric);
+        ((TextView) getView().findViewById(R.id.forecast_detail_low)).setText(low);
+
+        String desc = cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC));
+        ((TextView) getView().findViewById(R.id.forecast_detail_desc)).setText(desc);
+
+        // TODO icon
+
+        // Read humidity from cursor and update view
+        float humidity = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_HUMIDITY));
+        TextView humidityView = (TextView) getView().findViewById(R.id.forecast_detail_humidity);
+        humidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
+
+        // Read wind speed and direction from cursor and update view
+        float windSpeedStr = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_WIND_SPEED));
+        float windDirStr = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_DEGREES));
+        TextView windView = (TextView) getView().findViewById(R.id.forecast_detail_wind);
+        windView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
+
+        // Read pressure from cursor and update view
+        float pressure = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_PRESSURE));
+        TextView pressureView = (TextView) getView().findViewById(R.id.forecast_detail_pressure);
+        pressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
     }
 
     @Override
