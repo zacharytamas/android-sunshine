@@ -73,7 +73,7 @@ public class ForecastAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(COL_WEATHER_ID);
+        int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
         int imageId;
 
         if (this.getItemViewType(cursor.getPosition()) == VIEW_TYPE_TODAY) {

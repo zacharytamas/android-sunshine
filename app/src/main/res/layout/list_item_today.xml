@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="128dp"
+    android:layout_height="192dp"
     android:orientation="horizontal"
     android:padding="@dimen/activity_horizontal_margin">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView android:id="@+id/list_item_date_textview"
@@ -41,13 +41,23 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <ImageView android:id="@+id/list_item_icon"
-            android:layout_width="72dp"
-            android:layout_height="72dp" />
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageView android:id="@+id/list_item_icon"
+                android:layout_width="96dp"
+                android:layout_height="96dp" />
+
+        </FrameLayout>
+
+
 
         <TextView android:id="@+id/list_item_forecast_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Clear" />
 
     </LinearLayout>

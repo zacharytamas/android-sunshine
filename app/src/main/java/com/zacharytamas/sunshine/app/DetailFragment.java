@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
@@ -18,11 +19,11 @@ import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int FORECAST_DETAIL_LOADER = 100;
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
     }
 
     @Override
@@ -60,7 +61,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         String desc = cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC));
         ((TextView) getView().findViewById(R.id.forecast_detail_desc)).setText(desc);
 
-        // TODO icon
+        int weatherId = cursor.getInt(cursor.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID));
+        ImageView imageView = (ImageView) getView().findViewById(R.id.forecast_detail_icon);
+        imageView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
         // Read humidity from cursor and update view
         float humidity = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_HUMIDITY));
