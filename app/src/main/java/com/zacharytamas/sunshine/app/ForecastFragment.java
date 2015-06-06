@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.zacharytamas.sunshine.app.service.SunshineService;
 
 
 /**
@@ -134,7 +135,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public void fetchWeather() {
-        new FetchWeatherTask(getActivity()).execute(Utility.getPreferredLocation(getActivity()));
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        intent.putExtra(SunshineService.LOCATION_QUERY, Utility.getPreferredLocation(getActivity()));
+        getActivity().startService(intent);
     }
 
     @Override
