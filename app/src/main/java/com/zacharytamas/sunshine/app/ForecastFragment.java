@@ -130,12 +130,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public void onLocationChanged() {
-//        fetchWeather();
         getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
     public void fetchWeather() {
-
         SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
