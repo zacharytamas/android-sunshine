@@ -35,6 +35,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .findFragmentById(R.id.fragment_forecast);
             forecastFragment.mAdapter.setUseTodayLayout(false);
 
+        } else {
+            getSupportActionBar().setElevation(0f);
         }
 
     }
