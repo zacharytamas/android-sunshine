@@ -44,6 +44,7 @@ public class ForecastAdapter extends CursorAdapter {
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+    private boolean mUseTodayLayout = true;
 
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -60,6 +61,10 @@ public class ForecastAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
         view.setTag(new ViewHolder(view));
         return view;
+    }
+
+    public void setUseTodayLayout(Boolean value) {
+        mUseTodayLayout = value;
     }
 
     /*
@@ -105,7 +110,7 @@ public class ForecastAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override

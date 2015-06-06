@@ -29,7 +29,7 @@ import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String SELECTED_ROW_KEY = "selectedRow";
-    private ForecastAdapter mAdapter;
+    public ForecastAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
 
     public static final int FORECAST_LOADER = 2610;
