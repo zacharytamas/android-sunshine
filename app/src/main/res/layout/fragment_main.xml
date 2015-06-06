@@ -4,7 +4,6 @@
     tools:context=".MainActivityFragment">
 
     <ListView android:id="@+id/listview_forecast"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        style="@style/list_view_forecast" />
 
 </FrameLayout>

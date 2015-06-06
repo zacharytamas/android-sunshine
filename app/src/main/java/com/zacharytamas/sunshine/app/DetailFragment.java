@@ -35,7 +35,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         Bundle args = getArguments();
         if (args != null) {
-            mUri = args.getParcelable(((MainActivity) getActivity()).DETAIL_URI);
+            mUri = args.getParcelable(MainActivity.DETAIL_URI);
             getLoaderManager().initLoader(FORECAST_DETAIL_LOADER, null, this);
         }
 
