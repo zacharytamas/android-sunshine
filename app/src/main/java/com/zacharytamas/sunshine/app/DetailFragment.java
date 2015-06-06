@@ -1,7 +1,7 @@
 package com.zacharytamas.sunshine.app;
 
-import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -22,6 +22,7 @@ import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int FORECAST_DETAIL_LOADER = 100;
+    private Uri mUri;
 
     public DetailFragment() {
     }
@@ -32,8 +33,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
+        Bundle args = getArguments();
+        if (args != null) {
+            mUri = args.getParcelable(((MainActivity) getActivity()).DETAIL_URI);
             getLoaderManager().initLoader(FORECAST_DETAIL_LOADER, null, this);
         }
 
@@ -82,11 +84,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         pressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
     }
 
+    public void onLocationChanged(String location) {
+        Uri uri = mUri;
+
+        if (uri != null) {
+            long date = WeatherEntry.getDateFromUri(uri);
+            mUri = WeatherEntry.buildWeatherLocationWithDate(location, date);
+            getLoaderManager().restartLoader(FORECAST_DETAIL_LOADER, null, this);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
-                getActivity().getIntent().getData(),
-                null, null, null, null);
+        if (mUri != null) {
+            return new CursorLoader(getActivity(), mUri, null, null, null, null);
+        }
+        return null;
     }
 
     @Override
