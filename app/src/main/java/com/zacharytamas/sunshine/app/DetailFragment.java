@@ -50,37 +50,37 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         String date = Utility.getFriendlyDayString(getActivity(),
                 cursor.getLong(cursor.getColumnIndex(WeatherEntry.COLUMN_DATE)));
-        ((TextView) getView().findViewById(R.id.forecast_detail_date)).setText(date);
+        ((TextView) getView().findViewById(R.id.detail_day_textview)).setText(date);
 
         String high = Utility.formatTemperature(getActivity(),
                 cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MAX_TEMP)), isMetric);
-        ((TextView) getView().findViewById(R.id.forecast_detail_high)).setText(high);
+        ((TextView) getView().findViewById(R.id.detail_high_textview)).setText(high);
 
         String low = Utility.formatTemperature(getActivity(),
                 cursor.getDouble(cursor.getColumnIndex(WeatherEntry.COLUMN_MIN_TEMP)), isMetric);
-        ((TextView) getView().findViewById(R.id.forecast_detail_low)).setText(low);
+        ((TextView) getView().findViewById(R.id.detail_low_textview)).setText(low);
 
         String desc = cursor.getString(cursor.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC));
-        ((TextView) getView().findViewById(R.id.forecast_detail_desc)).setText(desc);
+        ((TextView) getView().findViewById(R.id.detail_forecast_textview)).setText(desc);
 
         int weatherId = cursor.getInt(cursor.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID));
-        ImageView imageView = (ImageView) getView().findViewById(R.id.forecast_detail_icon);
+        ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon);
         imageView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
         // Read humidity from cursor and update view
         float humidity = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_HUMIDITY));
-        TextView humidityView = (TextView) getView().findViewById(R.id.forecast_detail_humidity);
+        TextView humidityView = (TextView) getView().findViewById(R.id.detail_humidity_textview);
         humidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
 
         // Read wind speed and direction from cursor and update view
         float windSpeedStr = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_WIND_SPEED));
         float windDirStr = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_DEGREES));
-        TextView windView = (TextView) getView().findViewById(R.id.forecast_detail_wind);
+        TextView windView = (TextView) getView().findViewById(R.id.detail_wind_textview);
         windView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
 
         // Read pressure from cursor and update view
         float pressure = cursor.getFloat(cursor.getColumnIndex(WeatherEntry.COLUMN_PRESSURE));
-        TextView pressureView = (TextView) getView().findViewById(R.id.forecast_detail_pressure);
+        TextView pressureView = (TextView) getView().findViewById(R.id.detail_pressure_textview);
         pressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
     }
 
