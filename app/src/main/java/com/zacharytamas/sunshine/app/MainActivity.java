@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.zacharytamas.sunshine.app.sync.SunshineSyncAdapter;
+
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
@@ -38,6 +40,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         } else {
             getSupportActionBar().setElevation(0f);
         }
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
 
     }
 

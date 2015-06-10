@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.zacharytamas.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.zacharytamas.sunshine.app.sync.SunshineSyncAdapter;
 
 
 /**
@@ -129,12 +130,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public void onLocationChanged() {
-//        fetchWeather();
         getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
     public void fetchWeather() {
-        new FetchWeatherTask(getActivity()).execute(Utility.getPreferredLocation(getActivity()));
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
