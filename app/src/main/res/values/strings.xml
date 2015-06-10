@@ -109,5 +109,6 @@
     <!-- Strings related to Notification preference -->
     <string name="pref_last_notification">last_notification</string>
     <string name="nullstate_no_weather">No Weather Information Available</string>
+    <string name="nullstate_no_weather_offline">Forecasts will be loaded when your device comes back online.</string>
 
 </resources>
