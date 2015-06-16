@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             mGcm = GoogleCloudMessaging.getInstance(this);
             String regId = getRegistrationId(this);
 
-            if (SENDER_ID.equals("Your-Sender-ID")) {
+            if (PROJECT_NUMBER.equals("Your Project Number")) {
                 new AlertDialog.Builder(this)
-                        .setTitle("Needs Sender ID")
-                        .setMessage("GCM will not function in Sunshine until you replace your Sender ID with a Sender ID from the Google Developers Console.")
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create().show();
+                .setTitle("Needs Project Number")
+                .setMessage("GCM will not function in Sunshine until you set the Project Number to the one from the Google Developers Console.")
+                .setPositiveButton(android.R.string.ok, null)
+                .create().show();
             } else if (regId.isEmpty()) {
                 registerInBackground(this);
             }
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                     if (mGcm == null) {
                         mGcm = GoogleCloudMessaging.getInstance(context);
                     }
-                    String regId = mGcm.register(SENDER_ID);
+                    String regId = mGcm.register(PROJECT_NUMBER);
                     msg = "Device registered, registration ID=" + regId;
 
                     // You should send the registration ID to your server over HTTP,
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                     storeRegistrationId(context, regId);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
-                    // TODO(joannasmith): If there is an error, don't just keep trying to register.
+                    // TODO: If there is an error, don't just keep trying to register.
                     // Require the user to click a button again, or perform
                     // exponential back-off.
                 }
