@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console.
      */
-    String SENDER_ID = "1035871157198";
+    public static String PROJECT_NUMBER = "1035871157198";
 
     private boolean mTwoPane;
     private String mLocation;
