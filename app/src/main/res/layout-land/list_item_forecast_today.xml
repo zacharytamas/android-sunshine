@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2015 The Android Open Source Project
 
@@ -13,10 +14,16 @@
      See the License for the specific language governing permissions and
      limitations under the License.
  -->
-<resources>
-
-    <style name="ForecastStyle">
-        <item name="android:choiceMode">singleChoice</item>
-    </style>
-
-</resources>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_selector_white"
+    android:elevation="@dimen/appbar_elevation"
+    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
+    >
+    <include layout="@layout/list_item_base_forecast_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</FrameLayout>
